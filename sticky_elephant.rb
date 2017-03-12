@@ -1,7 +1,7 @@
 require 'socket'
 require 'pry-byebug'
 
-class PGPot
+class StickyElephant
   attr_reader :host, :port, :server
   def initialize(host: '0.0.0.0', port: 5432)
     @host = host
@@ -12,7 +12,7 @@ class PGPot
     @server = TCPServer.open(host, port)
     loop do
       Thread.start(server.accept) do |cli|
-        client = PGPotClient.new(cli)
+        client = StickyElephantClient.new(cli)
         puts("connection from #{client} accepted")
         client.process
       end
@@ -20,7 +20,7 @@ class PGPot
   end
 end
 
-class PGPotClient
+class StickyElephantClient
   attr_reader :socket
   def initialize(socket)
     @socket = socket
@@ -190,4 +190,4 @@ class PGPotClient
 
 end
 
-PGPot.new.listen
+StickyElephant.new.listen
