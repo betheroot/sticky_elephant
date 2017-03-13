@@ -1,5 +1,30 @@
 require 'socket'
 require 'pry-byebug'
+require 'optparse'
+
+class StickyElephantCLI
+  def opts_from_cli
+    options = {}
+    opt_parser = OptionParser.new do |opts|
+      opts.program_name = File.basename(__FILE__)
+      opts.banner = "#{opts.program_name} [options]"
+      opts.on('-p PORT', '--port PORT', 'Port to bind') { |port| options[:port] = port.to_i }
+      opts.on('-a ADDRESS', '--address ADDRESS', 'Host address to bind') { |addr| options[:host] = addr }
+      opts.on('-h', '--help', 'Display this screen') { puts opts ; exit(0) }
+    end
+    begin
+      opt_parser.parse!
+    rescue OptionParser::InvalidOption => e
+      puts e.message
+      exit false
+    end
+    options
+  end
+
+  def run
+    StickyElephant.new(**opts_from_cli).listen
+  end
+end
 
 class StickyElephant
   attr_reader :host, :port, :server
@@ -187,7 +212,5 @@ class StickyElephantClient
       f.puts(logline)
     end
   end
-
 end
-
-StickyElephant.new.listen
+StickyElephantCLI.new.run
