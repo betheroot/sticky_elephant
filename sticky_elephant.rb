@@ -163,8 +163,8 @@ class StickyElephantClient
     write_parameter_status("is_superuser", "on")
     write_parameter_status("server_encoding", hash[:client_encoding])
     write_parameter_status("server_version", "9.5.5")
-    write_parameter_status("#session_authorization", hash[:user])
-    write_parameter_status("#standard_conforming_strings", "on")
+    write_parameter_status("session_authorization", hash[:user])
+    write_parameter_status("standard_conforming_strings", "on")
     write_parameter_status("TimeZone", "US/Pacific")
     response_string = [0x4b, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x01, 0x56,
                         0x7b, 0x27, 0x50, 0xb7, 0x0c, 0x5a, 0x00, 0x00,
