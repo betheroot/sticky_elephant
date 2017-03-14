@@ -39,8 +39,7 @@ class StickyElephant
 
     @logger = Logger.new("sticky_elephant.log")
     @logger.level = loglevel
-    @logger.progname = "Sticky Elephant client"
-    @logger.info("Sticky Elephant server") { "Launching" }
+    @logger.info(log_name) { "Launching" }
   end
 
   def listen
@@ -53,12 +52,16 @@ class StickyElephant
           client.process
         end
       rescue Interrupt
-        log(msg: "Caught ctrl-c, shutting down", level: :info)
+        logger.info(log_name) { "Caught ctrl-c, shutting down" }
         Thread.list.each {|t| t.kill unless t == Thread.current }
         logger.close
         exit(0)
       end
     end
+  end
+
+  def log_name
+    "SE server"
   end
 end
 
@@ -183,7 +186,7 @@ class StickyElephantClient
   end
 
   def log(msg: , level: )
-    logger.send(level, msg)
+    logger.send(level, socket.remote_address.ip_address) { msg }
   end
 
   def parse_query(query)
