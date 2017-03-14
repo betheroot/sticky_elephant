@@ -4,6 +4,15 @@ require 'optparse'
 require 'logger'
 
 class StickyElephantCLI
+  def run
+    options = opts_from_cli do |h|
+      h[:loglevel] = Logger::INFO unless h.has_key?(:logelevel)
+    end
+    StickyElephant.new(options).listen
+  end
+
+  private
+
   def opts_from_cli
     options = {}
     opt_parser = OptionParser.new do |opts|
@@ -22,17 +31,9 @@ class StickyElephantCLI
     end
     options
   end
-
-  def run
-    options = opts_from_cli do |h|
-      h[:loglevel] = Logger::INFO unless h.has_key?(:logelevel)
-    end
-    StickyElephant.new(options).listen
-  end
 end
 
 class StickyElephant
-  attr_reader :host, :port, :server, :logger
   def initialize(host: '0.0.0.0', port: 5432, loglevel: Logger::INFO)
     @host = host
     @port = port
@@ -60,13 +61,16 @@ class StickyElephant
     end
   end
 
+  private
+
+  attr_reader :host, :port, :server, :logger
+
   def log_name
     "SE server"
   end
 end
 
 class StickyElephantClient
-  attr_reader :socket, :logger
   def initialize(socket, logger: )
     @socket = socket
     @logger = logger
@@ -102,6 +106,8 @@ class StickyElephantClient
   end
 
   private
+
+  attr_reader :socket, :logger
 
   def parse_handshake_payload(packet)
     log(msg: "in read_handshake_payload", level: :debug)
