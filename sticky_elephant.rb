@@ -35,18 +35,19 @@ class StickyElephantCLI
 end
 
 class StickyElephant
-  attr_reader :host, :port, :server, :loglevel
+  attr_reader :host, :port, :server, :logger
   def initialize(host: '0.0.0.0', port: 5432, loglevel: Logger::WARN)
     @host = host
     @port = port
-    @loglevel = loglevel
+    @logger = Logger.new("sticky_elephant.log")
+    @logger.level = loglevel
   end
 
   def listen
     @server = TCPServer.open(host, port)
     loop do
       Thread.start(server.accept) do |cli|
-        client = StickyElephantClient.new(cli, loglevel: loglevel)
+        client = StickyElephantClient.new(cli, logger: logger)
         puts("connection from #{client} accepted")
         client.process
       end
@@ -56,10 +57,9 @@ end
 
 class StickyElephantClient
   attr_reader :socket, :logger
-  def initialize(socket, loglevel: Logger::WARN)
+  def initialize(socket, logger: )
     @socket = socket
-    @logger = Logger.new('./sticky_elephant.log')
-    @logger.level = loglevel
+    @logger = logger
   end
 
   def process
