@@ -5,7 +5,7 @@ require 'logger'
 
 class StickyElephantCLI
   def run
-    options = opts_from_cli do |h|
+    options = opts_from_cli.tap do |h|
       h[:loglevel] = Logger::INFO unless h.has_key?(:logelevel)
     end
     StickyElephant.new(options).listen
