@@ -2,7 +2,7 @@ module StickyElephant
   class CLI
     def run
       options = opts_from_cli.tap do |h|
-        h[:loglevel] = Logger::INFO unless h.has_key?(:logelevel)
+        h[:loglevel] = Logger::INFO unless h.has_key?(:loglevel)
       end
       Server.new(options).listen
     end
