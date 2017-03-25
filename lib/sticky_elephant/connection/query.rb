@@ -6,7 +6,6 @@ module StickyElephant
     class Query < Base
 
       def process
-        log(msg: str, level: :debug)
         log(msg: "QUERY: #{str}", level: :info)
         socket.write(response)
       end
