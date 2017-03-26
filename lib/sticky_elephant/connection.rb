@@ -20,10 +20,10 @@ module StickyElephant
       when 'Q'
         Query.new(payload, socket: socket, logger: logger)
       when 'X'
-        nil
+        Null.new(payload, socket: socket, logger: logger)
       else
         log(msg: "Unknown input #{payload}", level: :debug)
-        nil
+        Null.new(payload, socket: socket, logger: logger)
       end
     end
 
