@@ -1,9 +1,12 @@
-module StickyElephant::Errors ; end
-class StickyElephant::Errors::InvalidHandshake < StandardError ; end
-
 module StickyElephant
   class Connection
     class Handshake < Base
+      def self.validates?(payload)
+        return false if payload.bytesize < 8
+        len = payload[0..3].unpack('N').first
+        payload.bytesize == len
+      end
+
       def process
         log(msg: 'shaking hands', level: :debug)
         log(msg: payload, level: :debug)
