@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require 'sticky_elephant'
 
-StickElephant::CLI.new.run
+StickyElephant::CLI.new.run

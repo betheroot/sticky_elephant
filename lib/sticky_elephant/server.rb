@@ -15,7 +15,7 @@ module StickyElephant
         begin
           Thread.start(server.accept) do |cli|
             client = Connection.new(cli, logger: logger)
-            puts("connection from #{client} accepted")
+            @logger.info(log_name) { "connection from #{client} accepted" }
             client.process
           end
         rescue Interrupt
