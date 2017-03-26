@@ -53,14 +53,6 @@ module StickyElephant
         socket.write("R")
         socket.write(with_length_bytes("\x00\x00\x00\x00"))
       end
-
-      def pid
-        666
-      end
-
-      def key
-        0xEFBEADDE
-      end
     end
   end
 end

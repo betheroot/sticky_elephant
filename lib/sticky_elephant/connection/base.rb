@@ -36,6 +36,13 @@ module StickyElephant
         [length].pack("N") + val.to_s
       end
 
+      def pid
+        666
+      end
+
+      def key
+        0xEFBEADDE
+      end
     end
   end
 end
