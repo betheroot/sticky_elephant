@@ -1,6 +1,3 @@
-module StickyElephant::Errors ; end
-class StickyElephant::Errors::InvalidHandshake < StandardError ; end
-
 module StickyElephant
   class Connection
     class Query < Base
