@@ -6,8 +6,8 @@ module StickyElephant
     class Handshake < Base
       def process
         log(msg: 'shaking hands', level: :debug)
-        log(msg: str, level: :debug)
-        hash = parse_handshake_payload(str)
+        log(msg: payload, level: :debug)
+        hash = parse_handshake_payload
         negotiate_auth
         write_parameter_status("application_name", hash[:application_name])
         write_parameter_status("client_encoding", hash[:client_encoding])
@@ -26,15 +26,14 @@ module StickyElephant
         socket.write(response_string)
       end
 
-      def parse_handshake_payload(packet)
-        log(msg: "in read_handshake_payload", level: :debug)
+      def parse_handshake_payload
+        log(msg: "in parse_handshake_payload", level: :debug)
 
-        log(msg: "inital str #{packet}", level: :debug)
-        str = packet[8..-1]
-        payload_arr = str.split("\x00")
-        payload = Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
-        log(msg: "payload #{payload.inspect}", level: :debug)
-        payload
+        log(msg: "inital str #{payload}", level: :debug)
+        payload_arr = payload[8..-1].split("\x00")
+        payload_hash = Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
+        log(msg: "payload #{payload_hash.inspect}", level: :debug)
+        payload_hash
       end
 
       def negotiate_auth

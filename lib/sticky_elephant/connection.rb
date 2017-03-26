@@ -10,21 +10,21 @@ module StickyElephant
     end
 
     def self.for(socket, logger: )
-      str = socket.readpartial(1024**2)
-      log(msg: "Got #{str.inspect}", level: :debug)
-      case str[0]
+      payload = socket.readpartial(1024**2)
+      log(msg: "Got #{payload.inspect}", level: :debug)
+      case payload[0]
       when "\x00"
-        if SSLRequest.validates?(str)
-          SSLRequest.new(str, socket: socket, logger: logger)
+        if SSLRequest.validates?(payload)
+          SSLRequest.new(payload, socket: socket, logger: logger)
         else
-          Handshake.new(str, socket: socket, logger: logger)
+          Handshake.new(payload, socket: socket, logger: logger)
         end
       when 'Q'
-        Query.new(str, socket: socket, logger: logger)
+        Query.new(payload, socket: socket, logger: logger)
       when 'X'
         nil
       else
-        log(msg: "Unknown input #{str}", level: :debug)
+        log(msg: "Unknown input #{payload}", level: :debug)
         nil
       end
     end

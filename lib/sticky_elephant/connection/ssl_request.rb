@@ -4,8 +4,8 @@ class StickyElephant::Errors::InvalidHandshake < StandardError ; end
 module StickyElephant
   class Connection
     class SSLRequest < Base
-      def self.validates?(str)
-        str.bytes == [0, 0, 0, 8, 4, 210, 22, 47]
+      def self.validates?(payload)
+        payload.bytes == [0, 0, 0, 8, 4, 210, 22, 47]
       end
 
       def process

@@ -4,15 +4,15 @@ class StickyElephant::Errors::InvalidHandshake < StandardError ; end
 module StickyElephant
   class Connection
     class Base
-      def initialize(str, socket: , logger: )
-        @str = str
+      def initialize(payload, socket: , logger: )
+        @payload = payload
         @socket = socket
         @logger = logger
       end
 
       private
 
-      attr_reader :str, :socket, :logger
+      attr_reader :payload, :socket, :logger
 
       def log(msg: , level: )
         logger.send(level, socket.remote_address.ip_address) { msg }
