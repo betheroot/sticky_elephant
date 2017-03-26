@@ -1,5 +1,5 @@
 module StickyElephant
-  class Connection
+  module Handler
     class Query < Base
 
       def process

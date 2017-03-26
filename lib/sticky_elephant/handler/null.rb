@@ -1,5 +1,5 @@
 module StickyElephant
-  class Connection
+  module Handler
     class Null < Base
       def process
       end

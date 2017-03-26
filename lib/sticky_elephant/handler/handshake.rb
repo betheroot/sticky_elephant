@@ -1,5 +1,5 @@
 module StickyElephant
-  class Connection
+  module Handler
     class Handshake < Base
       def self.validates?(payload)
         return false if payload.bytesize < 8
@@ -77,7 +77,6 @@ module StickyElephant
         to_write = "S" + with_length_bytes("#{key}\x00#{value}\x00")
         socket.write(to_write)
       end
-
     end
   end
 end

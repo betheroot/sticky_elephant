@@ -1,5 +1,5 @@
 module StickyElephant
-  class Connection
+  module Handler
     class Base
       def initialize(payload, socket: , logger: )
         @payload = payload
