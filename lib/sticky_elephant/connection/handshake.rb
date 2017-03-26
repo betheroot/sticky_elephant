@@ -76,7 +76,6 @@ module StickyElephant
       def write_parameter_status(key, value)
         to_write = "S" + with_length_bytes("#{key}\x00#{value}\x00")
         socket.write(to_write)
-        log(msg: "Wrote kv #{to_write}", level: :debug)
       end
 
     end
