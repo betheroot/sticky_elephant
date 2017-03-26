@@ -9,9 +9,7 @@ module StickyElephant
       pp(*args)
     end
 
-    def self.for(socket, logger: )
-      payload = socket.readpartial(1024**2)
-      log(msg: "Got #{payload.inspect}", level: :debug)
+    def self.for(payload, socket: , logger: )
       case payload[0]
       when "\x00"
         if SSLRequest.validates?(payload)
@@ -32,7 +30,9 @@ module StickyElephant
     def process
       begin
         loop do
-          obj = Connection.for(socket, logger: logger)
+          payload = socket.readpartial(1024**2)
+          log(msg: "Got #{payload.inspect}", level: :debug)
+          obj = Connection.for(payload, socket: socket, logger: logger)
           log(msg: "#{obj.class}", level: :debug)
           obj.process
         end
