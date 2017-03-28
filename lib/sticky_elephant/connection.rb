@@ -14,7 +14,7 @@ module StickyElephant
           payload = socket.readpartial(1024**2)
           log(msg: "Got #{payload.inspect}", level: :debug)
           obj = Handler.for(payload, socket: socket, logger: logger)
-          log(msg: "#{obj.class}", level: :debug)
+          log(msg: "Handling with #{obj.class}", level: :debug)
           obj.process
         end
       rescue => e
