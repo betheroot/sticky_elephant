@@ -8,7 +8,7 @@ module StickyElephant
         elsif Handshake.validates?(payload)
           Handshake.new(payload, socket: socket, logger: logger)
         else
-          Null.new(payload, socket: socket, logger: logger)
+          Error.new(payload, socket: socket, logger: logger)
         end
       when 'Q'
         Query.new(payload, socket: socket, logger: logger)
