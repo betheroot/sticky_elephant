@@ -4,7 +4,7 @@ module StickyElephant
       @host = host
       @port = port
 
-      @logger = Logger.new("sticky_elephant.log")
+      @logger = ElephantLogger.new
       @logger.level = loglevel
       @logger.info(log_name) { "Launching" }
     end
