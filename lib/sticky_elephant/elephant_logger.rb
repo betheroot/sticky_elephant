@@ -18,6 +18,10 @@ module StickyElephant
       text.level
     end
 
+    def close
+      text.close
+    end
+
     private
 
     attr_reader :text
