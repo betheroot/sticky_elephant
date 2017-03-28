@@ -1,5 +1,7 @@
 module StickyElephant
   class Connection
+    include ::StickyElephant::ElephantLogger
+
     def initialize(socket, logger: )
       @socket = socket
       @logger = logger
@@ -31,10 +33,6 @@ module StickyElephant
     private
 
     attr_reader :socket, :logger
-
-    def log(msg: , level: )
-      logger.send(level, socket.remote_address.ip_address) { msg }
-    end
 
   end
 end

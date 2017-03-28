@@ -10,6 +10,7 @@ rescue LoadError
 end
 
 require "sticky_elephant/version"
+require "sticky_elephant/elephant_logger"
 require "sticky_elephant/handler/base"
 require "sticky_elephant/handler/handshake"
 require "sticky_elephant/handler/query"
