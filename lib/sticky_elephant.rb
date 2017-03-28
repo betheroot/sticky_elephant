@@ -3,6 +3,8 @@ require 'optparse'
 require 'logger'
 require 'pp'
 
+require 'hpfeeds'
+
 begin
   require 'pry-byebug'
 rescue LoadError
