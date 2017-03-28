@@ -12,7 +12,7 @@ module StickyElephant
     def opts_from_cli
       options = {}
       opt_parser = OptionParser.new do |opts|
-        opts.program_name = File.basename(__FILE__)
+        opts.program_name = "sticky_elephant"
         opts.banner = "#{opts.program_name} [options]"
         opts.on('-p PORT', '--port PORT', 'Port to bind') { |port| options[:port] = port.to_i }
         opts.on('-a ADDRESS', '--address ADDRESS', 'Host address to bind') { |addr| options[:host] = addr }
