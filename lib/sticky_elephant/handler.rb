@@ -15,7 +15,7 @@ module StickyElephant
       when 'X'
         Null.new(payload, socket: socket, logger: logger)
       else
-        log(msg: "Unknown input #{payload}", level: :debug)
+        logger.send(:debug, socket.remote_address.ip_address) { "Unknown input: #{payload}" }
         Null.new(payload, socket: socket, logger: logger)
       end
     end
