@@ -5,12 +5,7 @@ module StickyElephant
     def initialize(socket, logger: )
       @socket = socket
       @logger = logger
-      ip = begin
-             socket.remote_address.ip_address
-           rescue Errno::EINVAL
-             'localhost'
-           end
-      @logger.info("SE Server") { "connection from #{ip} accepted" }
+      @logger.info("SE Server") { "connection from #{remote_address} accepted" }
     end
 
     def process
