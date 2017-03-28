@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     sticky_elephant (0.1.0)
+      hpfeeds (~> 0.1, >= 0.1.6)
 
 GEM
   remote: https://rubygems.org/
