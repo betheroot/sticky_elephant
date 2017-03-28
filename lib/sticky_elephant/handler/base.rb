@@ -1,7 +1,7 @@
 module StickyElephant
   module Handler
     class Base
-      include ::StickyElephant::ElephantLogger
+      include ::StickyElephant::LogInterface
 
       def initialize(payload, socket: , logger: )
         @payload = payload

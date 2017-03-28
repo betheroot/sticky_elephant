@@ -1,6 +1,6 @@
 module StickyElephant
   class Connection
-    include ::StickyElephant::ElephantLogger
+    include ::StickyElephant::LogInterface
 
     def initialize(socket, logger: )
       @socket = socket
