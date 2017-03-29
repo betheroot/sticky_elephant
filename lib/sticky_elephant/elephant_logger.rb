@@ -17,8 +17,9 @@ module StickyElephant
     end
 
     EVENT_CHANNELS = {
-      connection: :connection,
-      query: :query,
+      connection: 'sticky_elephant.connections',
+      login: 'sticky_elephant.logins',
+      query: 'sticky_elephant.queries',
     }.freeze
 
     def event(type, payload)
