@@ -11,7 +11,7 @@ module StickyElephant
     def process
       begin
         loop do
-          payload = socket.readpartial(1024**2)
+          @payload = socket.readpartial(1024**2)
           log(msg: "Got #{payload.inspect}", level: :debug)
           obj = Handler.for(payload, socket: socket, logger: logger)
           log(msg: "Handling with #{obj.class}", level: :debug)
@@ -27,7 +27,7 @@ module StickyElephant
 
     private
 
-    attr_reader :socket, :logger
+    attr_reader :socket, :logger, :payload
 
   end
 end
