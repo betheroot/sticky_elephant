@@ -3,10 +3,10 @@ module StickyElephant
     def initialize
       @text = Logger.new("sticky_elephant.log")
       @hpfeeds = ::HPFeeds::Client.new({
-        host:   ENV.fetch('HPFEEDS_SERVER'),
-        port:   10_000,
-        ident:  'sticky_elephant',
-        secret: ENV.fetch('HPFEEDS_SECRET')
+        host:   ENV.fetch('HPF_HOST'),
+        port:   ENV.fetch('HPF_PORT', 10_000),
+        ident:  ENV.fetch('HPF_IDENT'),
+        secret: ENV.fetch('HPF_SECRET')
       })
     end
 
