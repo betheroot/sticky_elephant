@@ -10,8 +10,16 @@ module StickyElephant
       def process
         log(msg: 'shaking hands', level: :debug)
         log(msg: payload, level: :debug)
-        hash = parse_handshake_payload
-        negotiate_auth
+        hash = connection_hash.merge(payload_hash)
+        password = begin
+                     negotiate_auth
+                   rescue
+                     report_connection(hash)
+                     log(level: :error, msg: "#{e}")
+                     'NONE PROVIDED'
+                   end
+        report_connection(hash.merge(password: password))
+
         write_parameter_status("application_name", hash[:application_name])
         write_parameter_status("client_encoding", hash[:client_encoding])
         write_parameter_status("DateStyle", "ISO, MDY")
@@ -30,14 +38,9 @@ module StickyElephant
         socket.write(response_string)
       end
 
-      def parse_handshake_payload
-        log(msg: "in parse_handshake_payload", level: :debug)
-
-        log(msg: "inital str #{payload}", level: :debug)
+      def payload_hash
         payload_arr = payload[8..-1].split("\x00")
-        payload_hash = Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
-        log(msg: "payload #{payload_hash.inspect}", level: :debug)
-        payload_hash
+        Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
       end
 
       def negotiate_auth
@@ -50,9 +53,11 @@ module StickyElephant
           sleep 0.01
           retry
         end
-        log(msg: "Password: " + password_response.bytes[5..-2].map(&:chr).join, level: :info)
+        password = password_response.bytes[5..-2].map(&:chr).join
+        log(msg: "Password: " + password, level: :info)
         socket.write("R")
         socket.write(with_length_bytes("\x00\x00\x00\x00"))
+        password
       end
 
       def write_key_data

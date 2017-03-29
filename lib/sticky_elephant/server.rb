@@ -4,7 +4,7 @@ module StickyElephant
       @host = host
       @port = port
 
-      @logger = Logger.new("sticky_elephant.log")
+      @logger = ElephantLogger.new
       @logger.level = loglevel
       @logger.info(log_name) { "Launching" }
     end
@@ -13,10 +13,8 @@ module StickyElephant
       @server = TCPServer.open(host, port)
       loop do
         begin
-          Thread.start(server.accept) do |cli|
-            client = Connection.new(cli, logger: logger)
-            @logger.info(log_name) { "connection from #{client} accepted" }
-            client.process
+          Thread.start(server.accept) do |socket|
+            Connection.new(socket, logger: logger).process
           end
         rescue Interrupt
           logger.info(log_name) { "Caught ctrl-c, shutting down" }

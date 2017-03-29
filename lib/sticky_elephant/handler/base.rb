@@ -1,6 +1,8 @@
 module StickyElephant
   module Handler
     class Base
+      include ::StickyElephant::LogInterface
+
       def initialize(payload, socket: , logger: )
         @payload = payload
         @socket = socket
@@ -10,10 +12,6 @@ module StickyElephant
       private
 
       attr_reader :payload, :socket, :logger
-
-      def log(msg: , level: )
-        logger.send(level, socket.remote_address.ip_address) { msg }
-      end
 
       def with_length_bytes(val)
         length = 4 + val.bytesize
