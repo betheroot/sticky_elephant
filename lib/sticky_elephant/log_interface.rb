@@ -7,8 +7,13 @@ module StickyElephant
       logger.send(level, socket.remote_address.ip_address) { msg }
     end
 
-    def hpfeeds_payload
-      JSON.dump(connection_payload)
+    def report_query
+      json = JSON.dump(connection_payload.merge({query: payload}))
+      logger.event(:query, json)
+    end
+
+    def report_connection
+      logger.event(:query, JSON.dump(connection_payload))
     end
 
     def connection_payload
