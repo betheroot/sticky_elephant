@@ -11,7 +11,7 @@ module StickyElephant
         log(msg: 'shaking hands', level: :debug)
         log(msg: payload, level: :debug)
         hash = parse_handshake_payload
-        negotiate_auth
+        password = negotiate_auth
         write_parameter_status("application_name", hash[:application_name])
         write_parameter_status("client_encoding", hash[:client_encoding])
         write_parameter_status("DateStyle", "ISO, MDY")
@@ -50,9 +50,11 @@ module StickyElephant
           sleep 0.01
           retry
         end
-        log(msg: "Password: " + password_response.bytes[5..-2].map(&:chr).join, level: :info)
+        password = password_response.bytes[5..-2].map(&:chr).join
+        log(msg: "Password: " + password, level: :info)
         socket.write("R")
         socket.write(with_length_bytes("\x00\x00\x00\x00"))
+        password
       end
 
       def write_key_data
