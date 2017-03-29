@@ -2,6 +2,7 @@ require 'socket'
 require 'optparse'
 require 'logger'
 require 'pp'
+require 'json'
 
 require 'hpfeeds'
 
