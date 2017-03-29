@@ -18,7 +18,6 @@ module StickyElephant
 
     EVENT_CHANNELS = {
       connection: 'sticky_elephant.connections',
-      login: 'sticky_elephant.logins',
       query: 'sticky_elephant.queries',
     }.freeze
 
