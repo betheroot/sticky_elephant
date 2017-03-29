@@ -13,7 +13,7 @@ module StickyElephant
     end
 
     def report_connection(hash = connection_hash)
-      logger.event(:query, JSON.dump(hash))
+      logger.event(:connection, JSON.dump(hash))
     end
 
     def connection_hash
