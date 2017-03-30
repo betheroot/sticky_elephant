@@ -2,7 +2,8 @@ module StickyElephant
   class CLI
     def run
       options = opts_from_cli
-      config = Configuration.new(options[:configuration_path])
+      conf_path = options.fetch(:configuration_path, "sticky_elephant.conf")
+      config = Configuration.new(conf_path)
       Server.new(config).listen
     end
 
