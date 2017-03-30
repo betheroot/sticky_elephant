@@ -1,12 +1,12 @@
 module StickyElephant
   class ElephantLogger
-    def initialize
+    def initialize(configuration)
       @text = Logger.new("sticky_elephant.log")
       @hpfeeds = ::HPFeeds::Client.new({
-        host:   ENV.fetch('HPF_HOST'),
-        port:   ENV.fetch('HPF_PORT', 10_000),
-        ident:  ENV.fetch('HPF_IDENT'),
-        secret: ENV.fetch('HPF_SECRET')
+        host:   configuration.hpf_host,
+        port:   configuration.hpf_port,
+        ident:  configuration.hpf_ident,
+        secret: configuration.hpf_secret
       })
     end
 

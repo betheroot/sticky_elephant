@@ -1,11 +1,11 @@
 module StickyElephant
   class Server
-    def initialize(host: '0.0.0.0', port: 5432, log_level: Logger::INFO)
-      @host = host
-      @port = port
+    def initialize(configuration)
+      @host = configuration.host
+      @port = configuration.port
 
-      @logger = ElephantLogger.new
-      @logger.level = log_level
+      @logger = ElephantLogger.new(configuration)
+      @logger.level = configuration.log_level
       @logger.info(log_name) { "Launching" }
     end
 

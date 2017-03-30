@@ -4,7 +4,8 @@ module StickyElephant
       options = opts_from_cli.tap do |h|
         h[:log_level] = Logger::INFO unless h.has_key?(:log_level)
       end
-      Server.new(options).listen
+      config = Configuration.new("sticky_elephant.conf")
+      Server.new(config).listen
     end
 
     private
