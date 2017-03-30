@@ -1,15 +1,15 @@
 module StickyElephant
   class Server
     def initialize(configuration)
-      @host = configuration.host
-      @port = configuration.port
+      @configuration = configuration
 
       @logger = ElephantLogger.new(configuration)
       @logger.info(log_name) { "Launching" }
     end
 
     def listen
-      @server = TCPServer.open(host, port)
+      server = TCPServer.open(configuration.host, configuration.port)
+      Thread.abort_on_exception = configuration.abort_on_exception
       loop do
         begin
           Thread.start(server.accept) do |socket|
@@ -26,7 +26,7 @@ module StickyElephant
 
     private
 
-    attr_reader :host, :port, :server, :logger
+    attr_reader :configuration, :logger
 
     def log_name
       "SE server"
