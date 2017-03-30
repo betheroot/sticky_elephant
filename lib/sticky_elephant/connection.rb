@@ -5,7 +5,6 @@ module StickyElephant
     def initialize(socket, logger: )
       @socket = socket
       @logger = logger
-      @logger.info("SE Server") { "connection from #{remote_address} accepted" }
     end
 
     def process

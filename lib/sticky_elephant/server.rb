@@ -13,6 +13,12 @@ module StickyElephant
       loop do
         begin
           Thread.start(server.accept) do |socket|
+            remote_address = begin
+                               socket.remote_address.ip_address.to_s
+                             rescue Errno::EINVAL
+                               "localhost"
+                             end
+            logger.info(log_name) { "connection from #{remote_address} accepted" }
             Connection.new(socket, logger: logger).process
           end
         rescue Interrupt
