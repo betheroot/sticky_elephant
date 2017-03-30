@@ -14,6 +14,7 @@ rescue LoadError
 end
 
 require "sticky_elephant/version"
+require "sticky_elephant/hpfeeds_hack"
 require "sticky_elephant/configuration"
 require "sticky_elephant/elephant_logger"
 require "sticky_elephant/log_interface"

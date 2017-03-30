@@ -3,12 +3,17 @@ module StickyElephant
     def initialize(configuration)
       @text = Logger.new(configuration.log_path)
       @text.level = configuration.log_level
-      @hpfeeds = ::HPFeeds::Client.new(
-        host:   configuration.hpf_host,
-        port:   configuration.hpf_port,
-        ident:  configuration.hpf_ident,
-        secret: configuration.hpf_secret
-      )
+      begin
+        @hpfeeds = ::HPFeeds::Client.new(
+          host:   configuration.hpf_host,
+          port:   configuration.hpf_port,
+          ident:  configuration.hpf_ident,
+          secret: configuration.hpf_secret,
+          reconnect: false
+        )
+      rescue => e
+        warn("#{e.class} received from hpfeeds: #{e}")
+      end
     end
 
     %i(debug info warn error fatal unknown).each do |level|
@@ -26,7 +31,11 @@ module StickyElephant
       unless EVENT_CHANNELS.keys.include? type
         raise ArgumentError.new("Event type #{type} not in #{EVENT_CHANNELS.keys.join(',')}")
       end
-      hpfeeds.publish(payload, EVENT_CHANNELS.fetch(type))
+      begin
+        hpfeeds.publish(payload, EVENT_CHANNELS.fetch(type))
+      rescue => e
+        warn("#{e.class} received from hpfeeds: #{e}")
+      end
     end
 
     def close
