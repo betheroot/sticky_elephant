@@ -3,12 +3,12 @@ module StickyElephant
     def initialize(configuration)
       @text = Logger.new(configuration.log_path)
       @text.level = configuration.log_level
-      @hpfeeds = ::HPFeeds::Client.new({
+      @hpfeeds = ::HPFeeds::Client.new(
         host:   configuration.hpf_host,
         port:   configuration.hpf_port,
         ident:  configuration.hpf_ident,
         secret: configuration.hpf_secret
-      })
+      )
     end
 
     %i(debug info warn error fatal unknown).each do |level|
