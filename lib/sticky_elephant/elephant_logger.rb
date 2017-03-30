@@ -1,7 +1,7 @@
 module StickyElephant
   class ElephantLogger
     def initialize(configuration)
-      @text = Logger.new("sticky_elephant.log")
+      @text = Logger.new(configuration.log_path)
       @hpfeeds = ::HPFeeds::Client.new({
         host:   configuration.hpf_host,
         port:   configuration.hpf_port,
