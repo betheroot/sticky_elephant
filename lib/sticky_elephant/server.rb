@@ -5,7 +5,6 @@ module StickyElephant
       @port = configuration.port
 
       @logger = ElephantLogger.new(configuration)
-      @logger.level = configuration.log_level
       @logger.info(log_name) { "Launching" }
     end
 
