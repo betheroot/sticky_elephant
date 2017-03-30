@@ -26,24 +26,17 @@ module StickyElephant
       unless EVENT_CHANNELS.keys.include? type
         raise ArgumentError.new("Event type #{type} not in #{EVENT_CHANNELS.keys.join(',')}")
       end
-      @hpfeeds.publish(payload, EVENT_CHANNELS.fetch(type))
-    end
-
-    def level=(lev)
-      text.level = lev
-    end
-
-    def level
-      text.level
+      hpfeeds.publish(payload, EVENT_CHANNELS.fetch(type))
     end
 
     def close
       text.close
+      hpfeeds.close
     end
 
     private
 
-    attr_reader :text
+    attr_reader :text, :hpfeeds
 
   end
 end
