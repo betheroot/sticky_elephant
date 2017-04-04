@@ -1,10 +1,50 @@
-# StickyElephant
+# Sticky Elephant
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sticky_elephant`. To experiment with that code, run `bin/console` for an interactive prompt.
+Sticky Elephant is a [medium-interaction](https://pdfs.semanticscholar.org/9d46/8fa983b844c76a07b1e3ea63d6f7a9cae294.pdf)
+PostgreSQL honeypot.
+
+```
+sticky_elephant [options]
+    -c, --config CONFIG              Configuration file to read
+    -h, --help                       Display this screen
+```
 
 ## Usage
 
-Press buttons win game
+Either install the gem and
+```
+% sticky_elephant
+```
+
+or clone the repo and
+
+```
+% ./bin/sticky_elephant
+```
+
+## Configuration
+`sticky_elephant.conf` is a YAML file that defines Sticky Elephant's behavior.
+You can tell Sticky Elephant what configuration file to use with `-c`.  The
+configuration file looks like this:
+
+```
+:log_path: "./sticky_elephant.log"
+:port: 5432
+:host: 0.0.0.0
+:debug: true
+:abort_on_exception: false
+:hpf_host: 127.0.0.1
+:hpf_port: 10000
+:hpf_ident: 24b6875e-03f1-4c2a-b5b0-11af1f49e2bb
+:hpf_secret: woofwoofcharlesisagooddog
+```
+`host` and `port` define the host address and port to which Sticky Elephant
+should bind.  `log_path` is the log to which Sticky Elephant will write.  Do
+note that HPFeeds logs go to `stdout` and are separate from Sticky Elephant
+application logs.  `debug` turns on debug-level logging; `abort_on_exception`
+kills threads when they encounter an exception.  The `hpf`-prefixed options are
+for configuring the HPFeeds server to which Sticky Elephant should report
+queries and connections.
 
 ## Development
 
