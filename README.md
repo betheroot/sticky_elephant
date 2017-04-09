@@ -56,3 +56,11 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ffleming/sticky_elephant.
 
+## To do
+* Support [md5 authentication](https://www.postgresql.org/docs/9.6/static/auth-methods.html)
+* Anti-fingerprinting
+    * Mimic commands
+        * `\l`
+        * `\d`
+        * `\dt`
+* Log user-selected database in handshake
