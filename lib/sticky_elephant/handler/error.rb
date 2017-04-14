@@ -10,23 +10,23 @@ module StickyElephant
       def handshake_error
         error_response_for(
           severity: :error,
-          code: "0A000",
-          message: "unsupported frontend protocol 65363.19778: server supports 1.0 to 3.0",
-          file: "postmaster.c",
-          line: "2005",
-          routine: "ProcessStartupPacket"
+          code:     "0A000",
+          message:  "unsupported frontend protocol 65363.19778: server supports 1.0 to 3.0",
+          file:     "postmaster.c",
+          line:     "2005",
+          routine:  "ProcessStartupPacket"
         )
       end
 
       ERROR_RESPONSE_SEVERITY = {
-        error: "ERROR",
-        fatal: "FATAL",
-        panic: "PANIC",
+        error:   "ERROR",
+        fatal:   "FATAL",
+        panic:   "PANIC",
         warning: "WARNING",
-        notice: "NOTICE",
-        debug: "DEBUG",
-        info: "INFO",
-        log: "LOG"
+        notice:  "NOTICE",
+        debug:   "DEBUG",
+        info:    "INFO",
+        log:     "LOG"
       }.freeze
 
       ERROR_CODES = %w(00000 01000 0100C 01008 01003 01007 01006 01004 01P01 02000 02001 03000 08000 08003
