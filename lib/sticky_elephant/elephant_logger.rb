@@ -4,13 +4,11 @@ module StickyElephant
       @text = Logger.new(configuration.log_path)
       @text.level = configuration.log_level
       begin
-        @hpfeeds = ::HPFeeds::Client.new(
-          host:   configuration.hpf_host,
-          port:   configuration.hpf_port,
-          ident:  configuration.hpf_ident,
-          secret: configuration.hpf_secret,
-          reconnect: false
-        )
+        @hpfeeds = if configuration.use_hpfeeds?
+                     new_hpfeeds_connection
+                   else
+                     null_hpfeeds_connection
+                   end
       rescue => e
         warn("#{e.class} received from hpfeeds: #{e}")
       end
@@ -47,5 +45,23 @@ module StickyElephant
 
     attr_reader :text, :hpfeeds
 
+    def new_hpfeeds_connection
+      ::HPFeeds::Client.new(
+        host:   configuration.hpf_host,
+        port:   configuration.hpf_port,
+        ident:  configuration.hpf_ident,
+        secret: configuration.hpf_secret,
+        reconnect: false
+      )
+    end
+
+    def null_hpfeeds_connection
+      @null_hpfeeds_klass ||= Struct.new('NullHPFeedsConnection') do
+        def publish(*args)
+          # noop
+        end
+      end
+      @null_hpfeeds_connection ||= @null_hpfeeds_klass.new
+    end
   end
 end
