@@ -4,6 +4,8 @@ module StickyElephant
       :hpf_host, :hpf_port, :hpf_ident, :hpf_secret, :use_hpf, :debug
     alias_method :debug?, :debug
     alias_method :use_hpf?, :use_hpf
+    alias_method :use_hpfeeds, :use_hpf
+    alias_method :use_hpfeeds?, :use_hpf
 
 
     # from_cli: log_path: "./sticky_elephant.log",
