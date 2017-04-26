@@ -11,6 +11,7 @@ module StickyElephant
                    end
       rescue => e
         warn("#{e.class} received from hpfeeds: #{e}")
+        raise e
       end
     end
 
@@ -57,9 +58,9 @@ module StickyElephant
 
     def null_hpfeeds_connection
       @null_hpfeeds_klass ||= Struct.new('NullHPFeedsConnection') do
-        def publish(*args)
-          # noop
-        end
+        def noop(*args) ; end
+        alias_method :close, :noop
+        alias_method :publish, :noop
       end
       @null_hpfeeds_connection ||= @null_hpfeeds_klass.new
     end
