@@ -5,7 +5,7 @@ module StickyElephant
       @text.level = configuration.log_level
       begin
         @hpfeeds = if configuration.use_hpfeeds?
-                     new_hpfeeds_connection
+                     new_hpfeeds_connection(configuration)
                    else
                      null_hpfeeds_connection
                    end
@@ -45,7 +45,7 @@ module StickyElephant
 
     attr_reader :text, :hpfeeds
 
-    def new_hpfeeds_connection
+    def new_hpfeeds_connection(configuration)
       ::HPFeeds::Client.new(
         host:   configuration.hpf_host,
         port:   configuration.hpf_port,
