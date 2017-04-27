@@ -11,7 +11,6 @@ module StickyElephant
                    end
       rescue => e
         warn("#{e.class} received from hpfeeds: #{e}")
-        raise e
       end
     end
 
