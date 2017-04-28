@@ -5,7 +5,6 @@ require 'pp'
 require 'json'
 require 'yaml'
 
-require 'timeout' # missed dependency in hpfeeds; PR incoming
 require 'hpfeeds'
 
 begin
