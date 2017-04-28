@@ -23,9 +23,9 @@ module StickyElephant
 
     # Order matters
     HANDLER_TYPES = {
+      StickyElephant::Handler::Quit       => :quit,
       StickyElephant::Handler::SSLRequest => :ssl_request,
       StickyElephant::Handler::Handshake  => :handshake,
-      StickyElephant::Handler::Quit       => :quit,
       StickyElephant::Handler::Query      => :query,
       StickyElephant::Handler::Error      => :invalid
     }.freeze
