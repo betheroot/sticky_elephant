@@ -21,6 +21,7 @@ module StickyElephant
       bytes == arr
     end
 
+    # Order matters
     HANDLER_TYPES = {
       StickyElephant::Handler::SSLRequest => :ssl_request,
       StickyElephant::Handler::Handshake  => :handshake,
@@ -37,11 +38,8 @@ module StickyElephant
 
     def handler
       return @handler if defined? @handler
-      _handlers = VALID_HANDLERS.select {|const| const.validates?(bytes)}
-      if _handlers.length > 1
-        raise StandardError.new("Multiple handlers validated payload #{self}; #{_handlers}")
-      end
-      @handler ||= _handlers.first || StickyElephant::Handler::Error
+      _handler = VALID_HANDLERS.find {|const| const.validates?(bytes) }
+      @handler = _handler || StickyElephant::Handler::Error
     end
 
     def valid_length?
