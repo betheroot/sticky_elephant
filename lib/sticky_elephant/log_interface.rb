@@ -49,7 +49,7 @@ module StickyElephant
     end
 
     def payload_string
-      payload.pack("C*")
+      payload.to_s
     end
 
     def string_from(byte_array)

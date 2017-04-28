@@ -26,6 +26,12 @@ describe StickyElephant::Payload do
     ])
   end
 
+  describe("#to_s") do
+    it do
+      expect(query.to_s).to eq 'QUERY: \'select * from camels;\''
+    end
+  end
+
   describe "#type" do
     it "correctly sets :query" do
       expect(query.type).to eq :query

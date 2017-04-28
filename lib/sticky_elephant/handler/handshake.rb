@@ -9,7 +9,6 @@ module StickyElephant
 
       def process
         log(msg: 'shaking hands', level: :debug)
-        log(msg: payload, level: :debug)
         hash = connection_hash.merge(payload_hash)
         password = begin
                      negotiate_auth
@@ -39,7 +38,7 @@ module StickyElephant
       end
 
       def payload_hash
-        payload_arr = payload.pack('C*')[8..-1].split("\x00")
+        payload_arr = payload.raw.pack('C*')[8..-1].split("\x00")
         Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
       end
 
