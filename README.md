@@ -33,6 +33,7 @@ configuration file looks like this:
 :host: 0.0.0.0
 :debug: true
 :abort_on_exception: false
+:use_hpf: true
 :hpf_host: 127.0.0.1
 :hpf_port: 10000
 :hpf_ident: 24b6875e-03f1-4c2a-b5b0-11af1f49e2bb
