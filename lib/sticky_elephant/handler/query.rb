@@ -2,6 +2,12 @@ module StickyElephant
   module Handler
     class Query < Base
 
+      def self.validates?(payload)
+        return false unless payload.first == "Q".ord
+        len = payload[1..4].pack('C*').unpack('N').first
+        len == payload.size - 1
+      end
+
       def process
         log(msg: "QUERY: #{payload_string}", level: :info)
         report_query(payload)
