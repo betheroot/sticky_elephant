@@ -7,7 +7,7 @@ module StickyElephant
       logger.send(level, remote_address) { string_from(msg) }
     end
 
-    def report_query(str = payload_string)
+    def report_query(str = payload.to_s)
       json = JSON.dump(
         connection_hash.merge( { query: string_from(str) } )
       )
@@ -24,7 +24,7 @@ module StickyElephant
         dest_ip: local_address,
         source_port: remote_port,
         dest_port: local_port,
-        raw: payload_string,
+        raw: payload.to_s,
       }
     end
 
