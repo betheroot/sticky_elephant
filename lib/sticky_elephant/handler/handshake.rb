@@ -2,9 +2,9 @@ module StickyElephant
   module Handler
     class Handshake < Base
       def self.validates?(payload)
-        return false if payload.bytesize < 8
-        len = payload[0..3].unpack('N').first
-        payload.bytesize == len
+        return false if payload.size < 8
+        len = payload[0..3].pack('C*').unpack('N').first
+        payload.size == len
       end
 
       def process
@@ -39,7 +39,7 @@ module StickyElephant
       end
 
       def payload_hash
-        payload_arr = payload[8..-1].split("\x00")
+        payload_arr = payload.pack('C*')[8..-1].split("\x00")
         Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
       end
 

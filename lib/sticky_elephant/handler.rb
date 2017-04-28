@@ -2,7 +2,7 @@ module StickyElephant
   module Handler
     def self.for(payload, socket: , logger: )
       case payload[0]
-      when "\x00"
+      when 0
         if SSLRequest.validates?(payload)
           SSLRequest.new(payload, socket: socket, logger: logger)
         elsif Handshake.validates?(payload)
@@ -10,9 +10,9 @@ module StickyElephant
         else
           Error.new(payload, socket: socket, logger: logger)
         end
-      when 'Q'
+      when 'Q'.ord
         Query.new(payload, socket: socket, logger: logger)
-      when 'X'
+      when 'X'.ord
         Null.new(payload, socket: socket, logger: logger)
       else
         logger.send(:debug, socket.remote_address.ip_address) { "Unknown input: #{payload}" }

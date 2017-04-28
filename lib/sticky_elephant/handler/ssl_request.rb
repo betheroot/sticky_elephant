@@ -2,7 +2,7 @@ module StickyElephant
   module Handler
     class SSLRequest < Base
       def self.validates?(payload)
-        payload.bytes == [0, 0, 0, 8, 4, 210, 22, 47]
+        payload == [0, 0, 0, 8, 4, 210, 22, 47]
       end
 
       def process
