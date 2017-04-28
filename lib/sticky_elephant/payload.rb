@@ -30,16 +30,15 @@ module StickyElephant
       StickyElephant::Handler::Error      => :invalid
     }.freeze
 
-    VALID_HANDLERS = (HANDLER_TYPES.keys - [ StickyElephant::Handler::Error]).freeze
-
     def type
       @type ||= HANDLER_TYPES.fetch(handler)
     end
 
     def handler
       return @handler if defined? @handler
-      _handler = VALID_HANDLERS.find {|const| const.validates?(bytes) }
-      @handler = _handler || StickyElephant::Handler::Error
+      _handler = HANDLER_TYPES.keys.find {|const| const.validates?(bytes) }
+      raise RuntimeError.new("Unable to find handler for #{self}") if _handler.nil?
+      @handler = _handler
     end
 
     def valid_length?

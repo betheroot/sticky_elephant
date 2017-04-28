@@ -1,6 +1,10 @@
 module StickyElephant
   module Handler
     class Error < Base
+      def self.validates?(payload)
+        true
+      end
+
       def process
         socket.write(handshake_error)
       end
