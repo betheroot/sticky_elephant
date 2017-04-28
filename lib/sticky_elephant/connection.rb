@@ -17,7 +17,7 @@ module StickyElephant
           obj.process
         end
       rescue => e
-        log(msg: e, level: :error) unless e.is_a? EOFError
+        log(msg: e.message, level: :error) unless e.is_a? EOFError
       ensure
         socket.close
         Thread.exit
