@@ -10,7 +10,7 @@ module StickyElephant
 
       def process
         log(msg: "#{payload}", level: :info)
-        report_query(payload)
+        report_query(payload.to_s)
         socket.write(response)
       end
 
