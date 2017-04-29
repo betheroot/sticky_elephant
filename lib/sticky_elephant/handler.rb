@@ -1,23 +1,16 @@
 module StickyElephant
   module Handler
+    TYPES_HANDLERS = {
+      quit:        StickyElephant::Handler::Quit,
+      ssl_request: StickyElephant::Handler::SSLRequest,
+      query:       StickyElephant::Handler::Query,
+      handshake:   StickyElephant::Handler::Handshake,
+      invalid:     StickyElephant::Handler::Error,
+    }
     def self.for(payload, socket: , logger: )
-      case payload[0]
-      when "\x00"
-        if SSLRequest.validates?(payload)
-          SSLRequest.new(payload, socket: socket, logger: logger)
-        elsif Handshake.validates?(payload)
-          Handshake.new(payload, socket: socket, logger: logger)
-        else
-          Error.new(payload, socket: socket, logger: logger)
-        end
-      when 'Q'
-        Query.new(payload, socket: socket, logger: logger)
-      when 'X'
-        Null.new(payload, socket: socket, logger: logger)
-      else
-        logger.send(:debug, socket.remote_address.ip_address) { "Unknown input: #{payload}" }
-        Null.new(payload, socket: socket, logger: logger)
-      end
+      klass = TYPES_HANDLERS[payload.type]
+      raise StandardError.new("Invalid type #{payload.type} for #{payload}") if klass.nil?
+      klass.new(payload, socket: socket, logger: logger)
     end
   end
 end

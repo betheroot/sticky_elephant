@@ -1,10 +1,9 @@
 module StickyElephant
   module Handler
     class Query < Base
-
       def process
-        log(msg: "QUERY: #{payload}", level: :info)
-        report_query
+        log(msg: "#{payload}", level: :info)
+        report_query(payload.to_s)
         socket.write(response)
       end
 

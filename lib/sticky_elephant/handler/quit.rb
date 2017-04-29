@@ -1,6 +1,6 @@
 module StickyElephant
   module Handler
-    class Null < Base
+    class Quit < Base
       def process
       end
     end

@@ -1,15 +1,8 @@
 module StickyElephant
   module Handler
     class Handshake < Base
-      def self.validates?(payload)
-        return false if payload.bytesize < 8
-        len = payload[0..3].unpack('N').first
-        payload.bytesize == len
-      end
-
       def process
         log(msg: 'shaking hands', level: :debug)
-        log(msg: payload, level: :debug)
         hash = connection_hash.merge(payload_hash)
         password = begin
                      negotiate_auth
@@ -39,7 +32,7 @@ module StickyElephant
       end
 
       def payload_hash
-        payload_arr = payload[8..-1].split("\x00")
+        payload_arr = payload.raw.pack('C*')[8..-1].split("\x00")
         Hash[*payload_arr.flatten(1)].map {|pair| [pair.first.to_sym, pair.last] }.to_h
       end
 

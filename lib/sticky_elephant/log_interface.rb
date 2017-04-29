@@ -4,11 +4,13 @@ module StickyElephant
     private
 
     def log(level: , msg: )
-      logger.send(level, socket.remote_address.ip_address) { msg }
+      logger.send(level, remote_address) { string_from(msg) }
     end
 
-    def report_query(str = payload)
-      json = JSON.dump(connection_hash.merge({query: str}))
+    def report_query(query)
+      json = JSON.dump(
+        connection_hash.merge( { query: query } )
+      )
       logger.event(:query, json)
     end
 
@@ -22,7 +24,7 @@ module StickyElephant
         dest_ip: local_address,
         source_port: remote_port,
         dest_port: local_port,
-        raw: payload,
+        raw: payload.raw.inspect
       }
     end
 
@@ -44,6 +46,14 @@ module StickyElephant
 
     def local_port
       socket.local_address.ip_port.to_s
+    end
+
+    def string_from(byte_array)
+      if byte_array.is_a? Array
+        byte_array.pack("C*")
+      else
+        byte_array
+      end
     end
   end
 end
