@@ -1,14 +1,23 @@
 require "spec_helper"
+require 'pathname'
+
+def fixture_dir
+  Pathname(spec_dir.join('fixtures'))
+end
+
+def spec_dir
+  Pathname(RSpec::Core::RubyProject.root).join('spec')
+end
+
+def fixture(pn)
+  pathname = Pathname(pn)
+  File.read(fixture_dir.join(pathname)).bytes
+end
+
 
 describe StickyElephant::Payload do
-  let(:query) do
-    # "Q\x00\x00\x00\x1Aselect * from camels;\x00"
-    StickyElephant::Payload.new([
-      81, 0, 0, 0, 26, 115, 101, 108, 101, 99,
-      116, 32, 42, 32, 102, 114, 111, 109, 32,
-      99, 97, 109, 101, 108, 115, 59, 0
-    ])
-  end
+  let(:query) { StickyElephant::Payload.new(fixture('query.valid')) }
+  let(:invalid_query_length) { StickyElephant::Payload.new(fixture('query.invalid')) }
 
   let(:invalid_payloads) do
     [
@@ -16,14 +25,6 @@ describe StickyElephant::Payload do
       StickyElephant::Payload.new([88]),
       StickyElephant::Payload.new([88, 0, 0, 0, 3]),
     ]
-  end
-
-  let(:invalid_query_length) do
-    StickyElephant::Payload.new([
-      81, 0, 0, 0, 25, 115, 101, 108, 101, 99,
-      116, 32, 42, 32, 102, 114, 111, 109, 32,
-      99, 97, 109, 101, 108, 115, 59, 0
-    ])
   end
 
   describe("#to_s") do
