@@ -15,31 +15,11 @@ module StickyElephant
       bytes == arr
     end
 
-    # Order matters
-    HANDLER_TYPES = {
-      StickyElephant::Handler::Quit       => :quit,
-      StickyElephant::Handler::SSLRequest => :ssl_request,
-      StickyElephant::Handler::Handshake  => :handshake,
-      StickyElephant::Handler::Query      => :query,
-      StickyElephant::Handler::Error      => :invalid
-    }.freeze
-
-    def type
-      @type ||= HANDLER_TYPES.fetch(handler)
-    end
-
-    def handler
-      return @handler if defined? @handler
-      _handler = HANDLER_TYPES.keys.find {|const| const.validates?(bytes) }
-      raise RuntimeError.new("Unable to find handler for #{self}") if _handler.nil?
-      @handler = _handler
-    end
-
     def valid_length?
       if has_claimed_type?
-        bytes[1..4].pack("C*").unpack("N") == bytes.size - 1
+        bytes[1..4].pack("C*").unpack("N").first == bytes.size - 1
       else
-        bytes[0..3] == bytes.size
+        bytes[0..3].pack("C*").unpack("N").first == bytes.size
       end
     end
 

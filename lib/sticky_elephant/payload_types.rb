@@ -1,17 +1,24 @@
 module StickyElephant
   module PayloadTypes
     # Order matters
-    HANDLER_TYPES = %i(quit ssl_request handshake query invalid).freeze
+    TYPES_HANDLERS = {
+      quit:        StickyElephant::Handler::Quit,
+      ssl_request: StickyElephant::Handler::SSLRequest,
+      query:       StickyElephant::Handler::Query,
+      handshake:   StickyElephant::Handler::Handshake,
+      invalid:        StickyElephant::Handler::Error,
+    }
+    TYPES = TYPES_HANDLERS.keys.freeze
 
     def type
-      @type ||= HANDLER_TYPES.fetch(handler)
+      return @type if defined? @type
+      _type = TYPES.find {|sym| send("is_#{sym}?") }
+      raise RuntimeError.new("Unable to find type for #{self}") if _type.nil?
+      @type = _type
     end
 
     def handler
-      return @handler if defined? @handler
-      _handler = HANDLER_TYPES.find {|sym| send("is_#{sym}?") }
-      raise RuntimeError.new("Unable to find handler for #{self}") if _handler.nil?
-      @handler = _handler
+      TYPES_HANDLERS.fetch(type)
     end
 
     private
