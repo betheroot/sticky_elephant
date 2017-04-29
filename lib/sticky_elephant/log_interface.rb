@@ -48,10 +48,6 @@ module StickyElephant
       socket.local_address.ip_port.to_s
     end
 
-    def payload_string
-      payload.to_s
-    end
-
     def string_from(byte_array)
       if byte_array.is_a? Array
         byte_array.pack("C*")
