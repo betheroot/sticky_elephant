@@ -1,12 +1,6 @@
 module StickyElephant
   module Handler
     class Handshake < Base
-      def self.validates?(payload)
-        return false if payload.size < 8
-        len = payload[0..3].pack('C*').unpack('N').first
-        payload.size == len
-      end
-
       def process
         log(msg: 'shaking hands', level: :debug)
         hash = connection_hash.merge(payload_hash)
