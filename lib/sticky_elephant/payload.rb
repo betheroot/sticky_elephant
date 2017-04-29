@@ -1,5 +1,7 @@
 module StickyElephant
   class Payload
+    include PayloadTypes
+
     def initialize(bytes = [])
       @bytes = bytes.dup.freeze
     end
