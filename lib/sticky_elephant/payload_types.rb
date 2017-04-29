@@ -1,14 +1,7 @@
 module StickyElephant
   module PayloadTypes
     # Order matters
-    TYPES_HANDLERS = {
-      quit:        StickyElephant::Handler::Quit,
-      ssl_request: StickyElephant::Handler::SSLRequest,
-      query:       StickyElephant::Handler::Query,
-      handshake:   StickyElephant::Handler::Handshake,
-      invalid:        StickyElephant::Handler::Error,
-    }
-    TYPES = TYPES_HANDLERS.keys.freeze
+    TYPES = %i( quit ssl_request query handshake invalid ).freeze
 
     def type
       return @type if defined? @type
