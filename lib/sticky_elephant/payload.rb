@@ -23,11 +23,15 @@ module StickyElephant
       end
     end
 
-    def to_s
+    def to_s(with_type: true)
       message = without_length.
         select {|byte| byte != 0 }.
         pack("C*")
-      "#{type.to_s.upcase}: '#{message}'"
+      if with_type
+        "#{type.to_s.upcase}: '#{message}'"
+      else
+        message
+      end
     end
 
     def raw
