@@ -1,18 +1,9 @@
 require "spec_helper"
 
-describe StickyElephant::PostgresProtocol do
-  let(:protocol) do
-    klass = class ProtocolDummy
-              include StickyElephant::PostgresProtocol
-            end
-    klass.new
+describe StickyElephant::PostgresSimulator do
+  let(:version_sim) { StickyElephant::PostgresSimulator.new("SELECT version();") }
+  it "Should respond with the version" do
+    expected = fixture("version-response")
+    expect(version_sim.response.bytes).to eq expected
   end
-
-  it "Should get 'T' messages right'" do
-    expected = [0x54, 0x00, 0x00, 0x00, 0x20, 0x00, 0x01, 0x76, 0x65, 0x72, 0x73,
-                0x69, 0x6f, 0x6e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x19, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00 ].pack("C*")
-    expect(protocol.row_description('version')).to eq expected
-  end
-
 end
