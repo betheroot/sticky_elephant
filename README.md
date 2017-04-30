@@ -65,3 +65,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/fflemi
         * `\d`
         * `\dt`
 * Log user-selected database in handshake
+* Remove argument to `Payload#to_s`
+* Break up `Payload` into separate objects
