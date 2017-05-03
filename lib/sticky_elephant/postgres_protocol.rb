@@ -14,7 +14,7 @@ module StickyElephant
     COMMAND_COMPLETE_COMMANDS = %i(insert delete update select move fetch copy create).freeze
     def command_complete(sym, num)
       unless COMMAND_COMPLETE_COMMANDS.include?(sym)
-        raise ArgumentError.new("#{sym} not in #{COMMAND_COMPLETE_COMMANDS}") 
+        raise ArgumentError.new("#{sym} not in #{COMMAND_COMPLETE_COMMANDS}")
       end
       sym = :select if sym == :create
       (

@@ -18,6 +18,8 @@ module StickyElephant
     def simulate
       @response = if version_query?
                     version_response
+                  elsif conf_file_query?
+                    conf_file_response
                   else
                     generic_response
                   end
@@ -50,10 +52,22 @@ module StickyElephant
       query.include? 'select version()'
     end
 
+    def conf_file_query?
+      query.include? "select current_setting('config_file')"
+    end
+
     def version_response
       version = 'PostgreSQL 9.5.5 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2, 64-bit'
       row_description('version') +
         data_row(version) +
+        command_complete(:select, 1) +
+        ready_for_query(:idle)
+    end
+
+    def conf_file_response
+      conf_file = '/etc/postgresql/9.5/main/postgresql.conf'
+      row_description('current_setting') +
+        data_row(conf_file) +
         command_complete(:select, 1) +
         ready_for_query(:idle)
     end
