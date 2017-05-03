@@ -12,6 +12,5 @@ describe StickyElephant::PostgresProtocol do
     expected = fixture("row-description")
     expect(protocol.row_description('version').bytes).to eq expected
   end
-
 end
 
