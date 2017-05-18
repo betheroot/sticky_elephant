@@ -11,15 +11,23 @@ module StickyElephant
       ).pack('C*')
     end
 
-    COMMAND_COMPLETE_COMMANDS = %i(insert delete update select move fetch copy create).freeze
-    def command_complete(sym, num)
+    COMMAND_COMPLETE_COMMANDS = %i(insert set delete update select move fetch copy create).freeze
+    def command_complete(sym, num = nil)
       unless COMMAND_COMPLETE_COMMANDS.include?(sym)
         raise ArgumentError.new("#{sym} not in #{COMMAND_COMPLETE_COMMANDS}")
       end
+      if sym != :set && num.nil?
+        raise ArgumentError.new("Must provide num for non-SET arguments")
+      end
       sym = :select if sym == :create
+      suffix = if sym == :set
+                 ""
+               else
+                 " #{num}"
+               end
       (
        ["C".ord ] +
-       with_length("#{sym.to_s.upcase} #{num}\x00")
+       with_length("#{sym.to_s.upcase}#{suffix}\x00")
       ).pack("C*")
     end
 
