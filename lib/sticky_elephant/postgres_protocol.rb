@@ -31,6 +31,13 @@ module StickyElephant
       ).pack("C*")
     end
 
+    def parameter_status(parameter, value)
+      (
+        [ "S".ord ] +
+        with_length("#{parameter}\x00#{value}\x00")
+      ).pack("C*")
+    end
+
     def data_row(*rows)
       results_block = rows.flat_map do |row|
         (int32_bytes(row.length) + row.bytes)

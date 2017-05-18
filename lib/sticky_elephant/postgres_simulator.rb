@@ -20,6 +20,8 @@ module StickyElephant
                     version_response
                   elsif conf_file_query?
                     conf_file_response
+                  elsif set_query?
+                    set_response
                   else
                     generic_response
                   end
@@ -56,6 +58,10 @@ module StickyElephant
       query.include? "select current_setting('config_file')"
     end
 
+    def set_query?
+      !!(query =~ /\Aset/)
+    end
+
     def version_response
       version = 'PostgreSQL 9.5.5 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2, 64-bit'
       row_description('version') +
@@ -70,6 +76,19 @@ module StickyElephant
         data_row(conf_file) +
         command_complete(:select, 1) +
         ready_for_query(:idle)
+    end
+
+    def set_response
+      parameter, val = parameter_and_value_from_set_query
+      parameter_status(parameter, val) +
+        command_complete(:set) +
+        ready_for_query(:idle)
+    end
+
+    SET_QUERY_REGEX = /\Aset\s+(?<restriction>session|local)?\s*(?<parameter>.*?)\s*(?<set_method>to|=)\s*(?<value>.*)\z/
+    def parameter_and_value_from_set_query
+      match = query.gsub("\n","").match SET_QUERY_REGEX
+      [match["parameter"], match["value"].gsub("'", "")]
     end
   end
 end
