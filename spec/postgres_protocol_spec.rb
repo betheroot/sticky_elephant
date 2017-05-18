@@ -13,6 +13,22 @@ describe StickyElephant::PostgresProtocol do
     expect(protocol.row_description('version').bytes).to eq expected
   end
 
+  describe "#parameter_status" do
+    parameter_status_tests =
+      [
+        {
+          args: [:client_encoding, "GBK"],
+          expected: "S\x00\x00\x00\x18client_encoding\x00GBK\x00"
+        }
+    ]
+    parameter_status_tests.each do |h|
+      it "Should respond correctly given arguments (#{h[:args].join(', ')})" do
+        expect(protocol.parameter_status(*h[:args])).to eq h[:expected]
+      end
+    end
+
+  end
+
   describe "#command_complete" do
     command_complete_tests =
       [
