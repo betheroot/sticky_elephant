@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Medium interaction PostgreSQL honeypot}
   spec.description   = %q{Log logins and queries for an emulated PostgresQL server}
-  spec.homepage      = "https://github.com/ffleming/sticky_elephant"
+  spec.homepage      = "https://github.com/betheroot/sticky_elephant"
   spec.licenses      = %w(MIT)
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
