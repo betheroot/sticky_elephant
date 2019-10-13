@@ -47,6 +47,36 @@ kills threads when they encounter an exception.  The `hpf`-prefixed options are
 for configuring the HPFeeds server to which Sticky Elephant should report
 queries and connections.
 
+## Installation
+
+You can just run sticky_elephant in a tmux session, that certainly works. If you
+prefer to set things up a bit nicer, make a `sticky_elephant` user and give them
+a home directory.  Put your config file in
+`/etc/sticky_elephant/sticky_elephant.conf` and ensure that the
+`sticky_elephant` user can read it.  Then you can use this systemd service
+definition to run sticky_elephant at boot:
+```
+[Unit]
+Description=sticky_elephant postgres honeypot
+Documentation=https://github.com/ffleming/sticky_elephant
+After=network.target
+
+[Service]
+WorkingDirectory=/home/sticky_elephant/
+User=sticky_elephant
+ExecStart=/usr/local/bin/sticky_elephant -c /etc/sticky_elephant/sticky_elephant.conf
+SyslogIdentifier=sticky_elephant
+StandardOutput=syslog
+StandardError=syslog
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+KillMode=process
+
+[Install]
+WantedBy=default.target
+Alias=sticky_elephant.service
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
